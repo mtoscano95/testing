@@ -165,10 +165,11 @@ app.listen(port, async()=>{
     }
 })
 
+
+
 */
 
 /* Step 4: Make an HTML file and add middleware to bring that in (path variable and the get route)
-
 
 const express = require('express');
 const path = require('path');
@@ -267,7 +268,7 @@ We will need a loader - babel loader (install it first)
 
 */
 
-/* Step 7: Use React to make your app fetch and render
+/* Step 7: Use React to make your app fetch and render. REMEMBER TO RUN START DEV AGAIN
 
 1) install react, reactDom and axios
  (npm i react --save-dev, npm i react-dom --save-dev, etc)
@@ -276,7 +277,7 @@ We will need a loader - babel loader (install it first)
                 - when we deploy app, we want to run webpacl
             - build:dev: npm run build -- --watch --mode=development
                 -while were developing we want to watch the file and show were developing through the mode
-
+            - make sure that your package.json file has index.js as the main file
             - we need to ignore src and dist, then run build div (front end - is taking code we write and putting it in form that can be used in browser)
 
 2) we go into our index.js file under src and start building out
@@ -293,13 +294,84 @@ We will need a loader - babel loader (install it first)
 
 
 
-
+REMEMBER TO RUN START DEV AGAIN
     
 
 
 
 */
 
+/* Step 8: Now that we've rendered let's build out our app a bit more
+
+1) We need to add an unordered list, list iems, a form where we can enter info
+            - we need to make a create function as well to make our items
+2) We need to add more useState arrays to handle names and errors
+3) we then need to add a post route
+
+
+import axios from 'axios';
+import React from 'react';
+import { createRoot } from 'react-dom/client';
+const {useState, useEffect} = React;
+
+const App = () => {
+    const [item, setItem] = useState([]);
+    const [name, setName] = useState('');
+    const [error, setError] = useState('');
+
+    useEffect(()=>{
+        const fetchItem = async() =>{
+            const response = await axios.get('/api/testing');
+            setItem(response.data);
+        }
+        fetchItem();
+    },[]);
+
+
+    const create = async(ev) => {
+        try{
+            ev.preventDefault();
+            const newItem = {name};
+            const response = await axios.post('/api/testing', newItem);
+            setItem(...item, response.data);
+            setName('');
+        }
+        catch(er){
+            setError(er.message)
+        }
+    }
+
+    return (
+        <div>
+            <h1>Test</h1>
+            <ul>
+                {
+                    item.map(i=>{
+                        return (
+                            <li key={i.id}>
+                                {i.name}
+                            </li>
+                        );
+                    })
+                }
+            </ul>
+            <form onSubmit = { create }>
+                <input value = {name} onChange={ ev => setName(ev.target.value) } />
+                {error}
+                <button disabled={!name}>Submit</button>
+            </form>
+        </div>
+    )
+}
+
+const root = createRoot(document.querySelector('#app'));
+root.render(<App />);
+
+*/
+
+/* Step 9: Now that we've done that let's move on to the next step which is 
+
+*/
 const express = require('express');
 const app = express();
 const path = require('path');

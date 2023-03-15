@@ -10,6 +10,7 @@ router.get('/', async(req, res, next)=>{
     }
 })
 
+
 router.get('/:id', async(req, res, next)=>{
     try{
         res.send(await Table.findByPk(req.params.id));
@@ -18,6 +19,17 @@ router.get('/:id', async(req, res, next)=>{
         next(er);
     }
 })
+
+router.post('/', async(req, res, next)=>{
+    try{
+        res.status(201).send(await Table.create(req.body));
+    }
+    catch(er){
+        next(er);
+    }
+})
+
+
 
 
 module.exports = router;
